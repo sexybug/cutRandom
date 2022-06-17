@@ -114,8 +114,4 @@ public class Main {
         return 0;
     }
 
-    public static int a() {
-        return 0;
-    }
-
 }
