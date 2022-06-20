@@ -15,8 +15,8 @@ import java.util.List;
 @Slf4j
 public class Main {
     public static void main(String[] args) {
-        log.info("Hello,world!");
-        System.out.println("Hello world!");
+        //log.info("Hello,world!");
+        //\u000d System.out.println("Hello world!");
     }
 
     /**
@@ -89,8 +89,8 @@ public class Main {
     }
 
     /**
-     * 截取文件夹下所有文件,结果保存在同一文件夹下。截取后删除原文件。
-     *
+     * 截取文件夹下所有文件,结果保存在同一文件夹下。
+     * 仅当源文件大小大于所需长度时才截取，截取后删除原文件。
      * @param dirPath   文件夹路径,以/结尾
      * @param outLength 截取长度(单位：字节)
      * @return 0成功，1失败
@@ -102,12 +102,14 @@ public class Main {
         File[] files = dir.listFiles();
         if (files != null) {
             for (int i = 0; i < files.length; i++) {
-                if (cutOne(files[i].getAbsolutePath(), dirPath + i + "_" + dateTime, outLength) != 0) {
-                    System.err.println("截取文件失败：" + files[i].getAbsolutePath());
-                    return 1;
-                }
-                if (!files[i].delete()) {
-                    System.err.println("删除原文件失败：" + files[i].getAbsolutePath());
+                if(files[i].length()>outLength){
+                    if (cutOne(files[i].getAbsolutePath(), dirPath + i + "_" + dateTime, outLength) != 0) {
+                        System.err.println("截取文件失败：" + files[i].getAbsolutePath());
+                        return 1;
+                    }
+                    if (!files[i].delete()) {
+                        System.err.println("删除原文件失败：" + files[i].getAbsolutePath());
+                    }
                 }
             }
         }
